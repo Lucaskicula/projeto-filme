@@ -1,5 +1,6 @@
 import "./globals.css";
 import Navbar from "@/components/organismos/Navbar";
+import { MovieProvider } from "@/context/MovieContext";
 
 export default function RootLayout({
   children,
@@ -8,13 +9,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-br">
-      <body className="bg-zinc-950 text-white">
-        <div className="min-h-screen pb-20 md:pt-20 md:pb-0">
-          {children}
-        </div>
+      <body className="bg-gradient-to-br from-slate-900 via-slate-950 to-black text-white">
+        
+        <MovieProvider>
+          
+          <div className="min-h-screen pb-20 md:pt-20 md:pb-0">
+            {children}
+          </div>
 
-        {/* Navbar fixa */}
-        <Navbar />
+          {/* Navbar fixa */}
+          <Navbar />
+
+        </MovieProvider>
+
       </body>
     </html>
   );

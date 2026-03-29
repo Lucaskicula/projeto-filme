@@ -6,7 +6,7 @@ export default function Navbar() {
     const path = usePathname();
 
     function linkClass(route: string) {
-        return path === route ? "text-purple-400" : "text-gray-400";
+        return path === route ? "text-blue-700" : "text-gray-400";
     }
 
     return (

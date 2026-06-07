@@ -1,36 +1,181 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CineList - Gerenciador de Filmes
 
-## Getting Started
+Projeto full stack para buscar filmes na TMDB, salvar uma lista para assistir mais tarde, marcar filmes como assistidos, avaliar, registrar observacoes pessoais e manter tudo vinculado ao perfil do usuario.
 
-First, run the development server:
+## Funcionalidades
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Busca de filmes pela API da TMDB sem expor a chave no frontend.
+- Home com filmes populares e destaque dinamico.
+- Cadastro e login de usuarios com JWT.
+- Recuperacao de senha com token local.
+- Pagina de perfil para alterar nome, e-mail e senha.
+- Lista de filmes para assistir mais tarde.
+- Area de filmes assistidos com avaliacao e observacoes.
+- Persistencia em PostgreSQL usando Prisma ORM.
+- Backend em NestJS com guards, validacao, CORS e Helmet.
+
+## Tecnologias
+
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+- NestJS
+- Prisma ORM
+- PostgreSQL
+- JWT
+- TMDB API
+
+## Estrutura
+
+```text
+projeto/
+  app/                 # paginas do frontend Next.js
+  components/          # componentes visuais
+  context/             # contextos de autenticacao e filmes
+  services/            # cliente HTTP do frontend
+  backend/             # API NestJS
+    prisma/            # schema e migrations Prisma
+    src/               # modulos, controllers e services
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Requisitos
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Node.js instalado
+- PostgreSQL instalado e rodando
+- Chave da TMDB
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Configuracao do frontend
 
-## Learn More
+Copie o arquivo de exemplo:
 
-To learn more about Next.js, take a look at the following resources:
+```powershell
+Copy-Item .env.example .env.local
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Conteudo esperado:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```env
+NEXT_PUBLIC_API_URL="http://localhost:3333/api"
+```
 
-## Deploy on Vercel
+Instale as dependencias:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```powershell
+npm install
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Rode o frontend:
+
+```powershell
+npm run dev
+```
+
+O frontend fica em:
+
+```text
+http://localhost:3000
+```
+
+## Configuracao do backend
+
+Entre na pasta do backend:
+
+```powershell
+cd backend
+```
+
+Copie o arquivo de exemplo:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Preencha as variaveis:
+
+```env
+DATABASE_URL="postgresql://postgres:SUA_SENHA@localhost:5432/filmes_db?schema=public"
+JWT_SECRET="troque-por-uma-chave-grande-e-secreta"
+JWT_EXPIRES_IN="7d"
+TMDB_API_KEY="sua-chave-da-tmdb"
+FRONTEND_URL="http://localhost:3000"
+PORT=3333
+```
+
+Instale as dependencias:
+
+```powershell
+npm install
+```
+
+Crie o banco no PostgreSQL, se ainda nao existir:
+
+```powershell
+createdb -U postgres -h localhost -p 5432 filmes_db
+```
+
+Rode as migrations:
+
+```powershell
+npm run prisma:migrate
+```
+
+Rode o backend:
+
+```powershell
+npm run start:dev
+```
+
+A API fica em:
+
+```text
+http://localhost:3333/api
+```
+
+## Rotas principais
+
+Autenticacao:
+
+- `POST /api/auth/register`
+- `POST /api/auth/login`
+- `GET /api/auth/me`
+- `PATCH /api/auth/me`
+- `POST /api/auth/forgot-password`
+- `POST /api/auth/reset-password`
+
+Filmes do usuario:
+
+- `GET /api/movies`
+- `POST /api/movies`
+- `PATCH /api/movies/:id/watched`
+- `PATCH /api/movies/:id`
+- `DELETE /api/movies/:id`
+
+TMDB proxy:
+
+- `GET /api/tmdb/popular`
+- `GET /api/tmdb/search?query=matrix`
+- `GET /api/tmdb/movie/:id`
+
+## Comandos uteis
+
+Frontend:
+
+```powershell
+npm run dev
+npm run build
+npm run lint
+```
+
+Backend:
+
+```powershell
+npm run start:dev
+npm run build
+npm run prisma:migrate
+npm run prisma:generate
+```
+
+## Observacoes de seguranca
+
+A chave da TMDB deve ficar apenas no arquivo `backend/.env`. O frontend chama o backend, e o backend consulta a TMDB. Arquivos `.env` reais nao devem ser enviados para o GitHub.

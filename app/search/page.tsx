@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { searchMovies } from "@/services/api";
+import { searchMovies, TmdbMovie } from "@/services/api";
 import MovieGrid from "@/components/organismos/MovieGrid";
 
 export default function SearchPage() {
   const [query, setQuery] = useState("");
-  const [movies, setMovies] = useState<any[]>([]);
+  const [movies, setMovies] = useState<TmdbMovie[]>([]);
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
 
@@ -92,15 +92,17 @@ export default function SearchPage() {
       {movies.length > 0 && (
         <section>
           <h2 className="text-lg font-semibold mb-4">
-            Resultados para "{query}"
+            Resultados para &quot;{query}&quot;
           </h2>
 
           <MovieGrid
-            movies={movies.map((m) => ({
-              id: m.id,
-              title: m.title,
-              image: `https://image.tmdb.org/t/p/w500${m.poster_path}`,
-            }))}
+            movies={movies
+              .filter((m) => m.poster_path)
+              .map((m) => ({
+                id: m.id,
+                title: m.title,
+                image: `https://image.tmdb.org/t/p/w500${m.poster_path}`,
+              }))}
           />
         </section>
       )}

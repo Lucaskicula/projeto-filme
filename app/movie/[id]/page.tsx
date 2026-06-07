@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { use } from "react";
-import { getMovieDetails } from "@/services/api";
+import { getMovieDetails, TmdbMovie } from "@/services/api";
 import { useMovieContext } from "@/context/MovieContext";
 
 export default function MovieDetails({
@@ -14,7 +14,7 @@ export default function MovieDetails({
   
   console.log("ID:", id);
 
-  const [movie, setMovie] = useState<any>(null);
+  const [movie, setMovie] = useState<TmdbMovie | null>(null);
   const { addToList } = useMovieContext();
 
   useEffect(() => {
@@ -32,6 +32,7 @@ export default function MovieDetails({
     <main className="p-4 space-y-4">
       <img
         src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+        alt={movie.title}
         className="w-full max-w-md mx-auto rounded-lg"
       />
 

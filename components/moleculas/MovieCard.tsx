@@ -37,7 +37,7 @@ export default function MovieCard({ id, title, image }: Props) {
         transition hover:scale-105
       "
     >
-      <img src={image} className="w-full h-64 object-cover" />
+      <img src={image} alt={title} className="w-full h-64 object-cover" />
 
       {/* overlay */}
       <div className="

@@ -16,7 +16,7 @@ export function useMovies() {
 
       const data = await searchMovies(query);
       setMovies(data.results);
-    } catch (err) {
+    } catch {
       setError("Erro ao buscar filmes");
     } finally {
       setLoading(false);

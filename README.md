@@ -1,4 +1,4 @@
-# CineList - Gerenciador de Filmes
+Gerenciador de Filmes
 
 Projeto full stack para buscar filmes na TMDB, salvar uma lista para assistir mais tarde, marcar filmes como assistidos, avaliar, registrar observacoes pessoais e manter tudo vinculado ao perfil do usuario.
 
